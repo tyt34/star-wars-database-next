@@ -24,5 +24,6 @@ export async function getData(
     }
   })
   const json = await res.json()
+  // console.log({ json })
   return json
 }
