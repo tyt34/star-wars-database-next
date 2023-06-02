@@ -1,6 +1,6 @@
-const url = 'https://swapi.dev/api/'
+import { IDataStarWars } from './types'
 
-export type IDataStarWars = 'things' | 'planets' | 'starships'
+const url = 'https://swapi.dev/api/'
 
 export async function getData(
   typeData: IDataStarWars,

@@ -4,6 +4,8 @@ import Layout from '../components/Layout/layout'
 import { arrCategory } from '../utils/constants'
 import { getData } from '../utils/start-wars'
 import Link from 'next/link'
+import { GetStaticProps, GetStaticPropsContext } from 'next'
+import { IDataStarWars } from '../utils/types'
 
 type Props = {
   category: string
@@ -41,22 +43,55 @@ export default function DynamicPage({
 }
 
 export async function getStaticPaths() {
-  const paths = arrCategory.map((item) => {
-    return {
-      params: { category: item }
-    }
-  })
+  // const paths = arrCategory.map((item) => {
+  //   for (let i=0; i<10; i++) {
+  //     console.log(' --> ', i )
+
+  //   }
+  //   return {
+  //     params: { category: item }
+  //   }
+  // })
+
+  const paths = arrCategory.reduce(
+    (
+      acc: {
+        params: {
+          category: string
+          id: string
+        }
+      }[],
+      item
+    ) => {
+      const newpaths = []
+      for (let i = 0; i < 10; i++) {
+        console.log(' --> ', i)
+        const path = {
+          params: {
+            category: item,
+            id: `${i}`
+          }
+        }
+        newpaths.push(path)
+      }
+      return [...acc, ...newpaths]
+    },
+    []
+  )
+  console.log({ paths, a: paths[0], b: paths.length })
   return {
     paths,
     fallback: false
   }
 }
 
-export async function getStaticProps(context: any) {
+export const getStaticProps: GetStaticProps = async (
+  context: GetStaticPropsContext
+) => {
   const { params } = context
-  const category = params.category
-
-  const resultCategory = await getData(category)
+  console.log({ context })
+  const category = params!.category
+  const resultCategory = await getData(category as IDataStarWars)
 
   return {
     props: {
