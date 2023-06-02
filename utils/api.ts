@@ -16,7 +16,8 @@ export async function getData(
   }
   urlTypeData =
     number !== undefined ? urlTypeData + number : urlTypeData
-  let res = await fetch(url + urlTypeData, {
+
+  const res = await fetch(url + urlTypeData, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -24,6 +25,5 @@ export async function getData(
     }
   })
   const json = await res.json()
-  // console.log({ json })
   return json
 }

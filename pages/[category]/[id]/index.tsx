@@ -1,33 +1,20 @@
-import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
+import React from 'react'
 import { GetStaticProps, GetStaticPropsContext } from 'next'
-import Layout from '../../../components/Layout/layout'
 import { arrCategory } from '../../../utils/constants'
-import { getData } from '../../../utils/start-wars'
+import { getData } from '../../../utils/api'
 import { IDataStarWars } from '../../../utils/types'
 import styles from './index.module.scss'
-
-const fieldsMap: Record<string, string> = {
-  name: 'Name:',
-  mass: 'Mass:',
-  gender: 'Gender:',
-  eye_color: 'Eye color:',
-  gravity: 'Gravity:',
-  orbital_period: 'Orbital period:',
-  terrain: 'Terrain:',
-  passengers: 'Passengers:',
-  starship_class: 'Starship class:',
-  max_atmosphering_speed: 'Max atmosphering speed:'
-}
+import Category from '../../../components/Category/Category'
+import Detail from '../../../components/Details/Details'
+import Layout from '../../../components/Layout/layout'
 
 type Props = {
   category: string
-  resultCategory: any
+  resultCategory: Record<string, string>[]
   resultId: any
 }
 
-export default function DynamicPage({
+export default function IdPage({
   category,
   resultCategory,
   resultId
@@ -35,44 +22,11 @@ export default function DynamicPage({
   return (
     <Layout>
       <div className={styles.grid}>
-        <section className={styles.list}>
-          {resultCategory?.map((el: { name: string }, i: number) => {
-            return (
-              <Link
-                href={`/${category}/${i + 1}`}
-                key={el.name}
-                className={styles.link}
-              >
-                <div
-                  key={el.name}
-                  className={styles.element}
-                >
-                  {el.name}
-                </div>
-              </Link>
-            )
-          })}
-        </section>
-        <section className={styles.details}>
-          {resultId.detail === 'Not found' ? (
-            <p className={styles.detail}>Информация отсутствует</p>
-          ) : (
-            Object.keys(resultId).map((key: string) => {
-              return (
-                <p
-                  key={key}
-                  className={styles.detail}
-                >
-                  {fieldsMap[key] ? (
-                    <>
-                      {fieldsMap[key]} {resultId[key]}
-                    </>
-                  ) : null}
-                </p>
-              )
-            })
-          )}
-        </section>
+        <Category
+          category={category}
+          resultCategory={resultCategory}
+        />
+        <Detail resultId={resultId} />
       </div>
     </Layout>
   )
@@ -123,8 +77,6 @@ export const getStaticProps: GetStaticProps = async (
     category as IDataStarWars,
     id as string
   )
-  console.log({ category, id })
-  console.log({ resultId })
 
   return {
     props: {

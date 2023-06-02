@@ -1,71 +1,52 @@
 import React from 'react'
-import { useRouter } from 'next/router'
-import Layout from '../../components/Layout/layout'
 import { arrCategory } from '../../utils/constants'
-import { getData } from '../../utils/start-wars'
-import Link from 'next/link'
 import { GetStaticProps, GetStaticPropsContext } from 'next'
+import { getData } from '../../utils/api'
 import { IDataStarWars } from '../../utils/types'
+import Category from '../../components/Category/Category'
+import Layout from '../../components/Layout/layout'
 import styles from './index.module.scss'
 
 type Props = {
   category: string
-  resultCategory: any
+  resultCategory: Record<string, string>[]
 }
 
-export default function DynamicPage({
+type PathType = {
+  params: {
+    category: string
+  }
+}
+
+export default function CategoryPage({
   category,
   resultCategory
 }: Props) {
   return (
     <Layout>
       <div className={styles.grid}>
-        <section className={styles.list}>
-          {resultCategory?.map((el: { name: string }, i: number) => {
-            return (
-              <Link
-                href={`/${category}/${i + 1}`}
-                key={el.name}
-                className={styles.link}
-              >
-                <div
-                  key={el.name}
-                  className={styles.element}
-                >
-                  {el.name}
-                </div>
-              </Link>
-            )
-          })}
-        </section>
+        <Category
+          category={category}
+          resultCategory={resultCategory}
+        />
       </div>
     </Layout>
   )
 }
 
 export async function getStaticPaths() {
-  const paths = arrCategory.reduce(
-    (
-      acc: {
+  const paths = arrCategory.reduce((acc: PathType[], item) => {
+    const newpaths = []
+    for (let i = 1; i < 11; i++) {
+      const path = {
         params: {
-          category: string
+          category: item
         }
-      }[],
-      item
-    ) => {
-      const newpaths = []
-      for (let i = 1; i < 11; i++) {
-        const path = {
-          params: {
-            category: item
-          }
-        }
-        newpaths.push(path)
       }
-      return [...acc, ...newpaths]
-    },
-    []
-  )
+      newpaths.push(path)
+    }
+    return [...acc, ...newpaths]
+  }, [])
 
   return {
     paths,
@@ -86,11 +67,4 @@ export const getStaticProps: GetStaticProps = async (
       resultCategory: resultCategory.results
     }
   }
-
-  /**
-   * если вернуть не то, то будет 404 страница
-   */
-  // return {
-  //   asdasd: true
-  // }
 }

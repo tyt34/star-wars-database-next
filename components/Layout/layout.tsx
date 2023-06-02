@@ -1,13 +1,8 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
-import Image from 'next/image'
-import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
 import styles from './layout.module.css'
 import { arrCategory } from '../../utils/constants'
-
-const name = 'Your Name'
-export const siteTitle = 'Next.js Sample Website'
 
 type LayoutProps = {
   children?: ReactNode
@@ -26,7 +21,7 @@ export default function Layout({ children, home }: LayoutProps) {
       >
         <h2>Star Wars Database</h2>
       </Link>
-      <p>Category list: </p>
+      <p className={styles.text}> Category list: </p>
       <nav className={styles.nav}>
         {arrCategory.map((namePage) => {
           return (

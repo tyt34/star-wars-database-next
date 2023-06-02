@@ -12,3 +12,7 @@
 .nav {
   display: flex;
 }
+
+.text {
+  color: rgb(0, 225, 255);
+}
