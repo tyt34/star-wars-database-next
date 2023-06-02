@@ -1,6 +1,7 @@
-body {
-  // background-color: rgb(156, 143, 143);
-  background-color: black;
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 30px;
 }
 
 .list {
@@ -11,7 +12,7 @@ body {
   text-decoration: none;
 }
 
-.list__el {
+.element {
   padding: 5px;
   border: 1px white solid;
   border-radius: 5px;
@@ -19,10 +20,4 @@ body {
   margin-bottom: 2px;
   cursor: pointer;
   color: rgb(0, 225, 255);
-}
-
-.star__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 30px;
 }
